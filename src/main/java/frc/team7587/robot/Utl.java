@@ -9,7 +9,7 @@ public final class Utl {
     public static void log(String s){
         // 
         long millis = System.currentTimeMillis();
-        if( (millis - ts) > 100){
+        if( (millis - ts) > 150){
             System.out.println("{" + LocalDateTime.now() + "} " + s);
             ts = millis;
         }

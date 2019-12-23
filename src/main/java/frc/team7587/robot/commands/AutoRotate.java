@@ -7,6 +7,7 @@
 
 package frc.team7587.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team7587.robot.Robot;
 import frc.team7587.robot.Utl;
@@ -18,7 +19,7 @@ public class AutoRotate extends Command {
   private int inErrZoneCount;
 
   public AutoRotate(double rotateAngle) {
-    // requires(Robot.m_driveTrain);
+    requires(Robot.m_driveTrain);
     Utl.log0("....autoRotate cmd constructor");
     this.rotateAngle = rotateAngle;
 
@@ -66,9 +67,10 @@ public class AutoRotate extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Utl.log(" ## autoRotate.end()");
+    Utl.log0(" ## autoRotate.end()");
     Robot.m_driveTrain.stop();
     Robot.m_driveTrain.getTurnController().disable();
+    Timer.delay(1);
   }
 
   // Called when another command which requires one or more of the same

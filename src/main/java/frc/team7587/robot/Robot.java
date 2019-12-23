@@ -4,7 +4,7 @@ package frc.team7587.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-
+import frc.team7587.robot.commands.AutonGroup;
 //subsystems
 import frc.team7587.robot.subsystems.DriveTrain;
 
@@ -25,7 +25,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     Utl.log("robotInit() called");
-    // m_autoCommand = new AutoCmdGroup();
+    m_autoCommand = new AutonGroup();
 
   }
 
@@ -48,6 +48,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // schedule the autonomous command
+    Utl.log("robot autonomousInit() called");
     if (m_autoCommand != null) {
       m_autoCommand.start();
     }

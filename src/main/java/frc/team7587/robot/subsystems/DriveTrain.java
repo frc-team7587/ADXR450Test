@@ -24,12 +24,12 @@ public class DriveTrain extends Subsystem implements PIDOutput{
 
   private ADXRS450_Gyro m_gyro;
 
-  static final double kP = 0.05;
-  static final double kI = 0.000;
+  static final double kP = 0.045;
+  static final double kI = 0.002;
   static final double kD = 0.02;
   static final double kF = 0.00;
 
-  public static final double kToleranceDegrees = 3.0f;
+  public static final double kToleranceDegrees = 1.5f;
 
   PIDController turnController;
   double rotateToAngleRate;
@@ -46,7 +46,7 @@ public class DriveTrain extends Subsystem implements PIDOutput{
 
     turnController = new PIDController(kP, kI, kD, kF, m_gyro, this);
     turnController.setInputRange(-180.0f, 180.0f);
-    turnController.setOutputRange(-0.65, 0.65);
+    turnController.setOutputRange(-0.6, 0.6);
     
     turnController.setAbsoluteTolerance(kToleranceDegrees);
     turnController.setContinuous(true);
@@ -77,13 +77,13 @@ public class DriveTrain extends Subsystem implements PIDOutput{
     Utl.log0("...driveTrain.resetGyro()");
     m_gyro.reset();
     turnController.reset();
-    Timer.delay(0.1);
+    Timer.delay(0.2);
   }
 
   public void initGyro(double targetAngle){
-    Utl.log0("...driveTrain.initGyro()");
-    // turnController.reset();
-    // m_gyro.reset();
+    // double adjTargetAngle = Math.copySign(Math.abs(targetAngle) - kToleranceDegrees, targetAngle);
+    // Utl.log0("...driveTrain.initGyro(), adj:" + adjTargetAngle);
+
     turnController.setSetpoint(targetAngle);
     turnController.enable();
   }
@@ -91,8 +91,12 @@ public class DriveTrain extends Subsystem implements PIDOutput{
   public void rotateAngle(){
     // use the rotateAngleRate from PID controller to turn
     showGyroData();
-    Utl.log(" ## driveTrain.rotateAngle(), PID output: " + this.rotateToAngleRate);
-    m_drive.arcadeDrive(0, this.rotateToAngleRate);
+    // double vOutput = Math.abs(rotateToAngleRate)<minOutput ? rotateToAngleRate=minOutput : rotateToAngleRate;
+    // vOutput = Math.copySign(vOutput, rotateToAngleRate);
+
+    Utl.log(" ## rotateAngle, PID: " + this.rotateToAngleRate); // + "; actual=" + vOutput);
+
+    m_drive.arcadeDrive(0, rotateToAngleRate);
   }
 
   public double getGyroAngle(){
