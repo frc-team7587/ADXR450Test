@@ -20,11 +20,5 @@ public final class Utl {
             System.out.println("{" + LocalDateTime.now() + "} " + s);
     }
 
-    // public static void log(String s, double millisCount){
-    //     long millis = System.currentTimeMillis();
-    //     if( (millis - ts) > 500){
-    //         log(s);
-    //         ts = millis;
-    //     }
-    // }
+
 }
