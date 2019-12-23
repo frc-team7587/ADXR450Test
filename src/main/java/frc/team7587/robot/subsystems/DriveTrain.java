@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team7587.robot.OI;
+import frc.team7587.robot.Utl;
 import frc.team7587.robot.commands.TeleopDrive;
 
 public class DriveTrain extends Subsystem implements PIDOutput{
@@ -23,9 +24,9 @@ public class DriveTrain extends Subsystem implements PIDOutput{
 
   private ADXRS450_Gyro m_gyro;
 
-  static final double kP = 0.055;
-  static final double kI = 0.002;
-  static final double kD = 0.002;
+  static final double kP = 0.05;
+  static final double kI = 0.000;
+  static final double kD = 0.02;
   static final double kF = 0.00;
 
   public static final double kToleranceDegrees = 3.0f;
@@ -35,6 +36,8 @@ public class DriveTrain extends Subsystem implements PIDOutput{
 
   public DriveTrain() {
     
+    Utl.log0("===DriveTrain constructor");
+
     m_gyro = new ADXRS450_Gyro(kGyroPort);    
     m_gyro.calibrate();
     m_gyro.reset();
@@ -43,7 +46,8 @@ public class DriveTrain extends Subsystem implements PIDOutput{
 
     turnController = new PIDController(kP, kI, kD, kF, m_gyro, this);
     turnController.setInputRange(-180.0f, 180.0f);
-    turnController.setOutputRange(-0.55, 0.55);
+    turnController.setOutputRange(-0.65, 0.65);
+    
     turnController.setAbsoluteTolerance(kToleranceDegrees);
     turnController.setContinuous(true);
   
@@ -52,6 +56,7 @@ public class DriveTrain extends Subsystem implements PIDOutput{
 
   @Override
   public void initDefaultCommand() {
+    Utl.log0("driveTrain.initDefaultCommand(): teleOpDrive()");
     setDefaultCommand(new TeleopDrive());
   }
 
@@ -63,23 +68,30 @@ public class DriveTrain extends Subsystem implements PIDOutput{
     SmartDashboard.putNumber("PID error", turnController.getError());
   }
 
+
+  public PIDController getTurnController(){
+    return this.turnController;
+  }
+  
   public void resetGyro(){
+    Utl.log0("...driveTrain.resetGyro()");
     m_gyro.reset();
     turnController.reset();
-    Timer.delay(0.2);
+    Timer.delay(0.1);
   }
 
   public void initGyro(double targetAngle){
-    // turn
+    Utl.log0("...driveTrain.initGyro()");
+    // turnController.reset();
+    // m_gyro.reset();
     turnController.setSetpoint(targetAngle);
     turnController.enable();
-
-    
   }
 
   public void rotateAngle(){
     // use the rotateAngleRate from PID controller to turn
     showGyroData();
+    Utl.log(" ## driveTrain.rotateAngle(), PID output: " + this.rotateToAngleRate);
     m_drive.arcadeDrive(0, this.rotateToAngleRate);
   }
 
@@ -89,11 +101,13 @@ public class DriveTrain extends Subsystem implements PIDOutput{
 
   @Override
   public void pidWrite(double output) {
-    log("pid output: " + output);
     rotateToAngleRate = output;
   }
 
+  /* normal teleOp drive by joystick */
   public void drive(double speed, double rotation) {
+    // Utl.log0("teleOp rotation: " + rotation);
+    SmartDashboard.putNumber("TeleOp drive rotation: ", rotation);
     m_drive.arcadeDrive(speed, rotation);
   }
 
@@ -102,14 +116,6 @@ public class DriveTrain extends Subsystem implements PIDOutput{
     m_leftMotor.stopMotor();
     m_rightMotor.stopMotor();
     
-  }
-
-  public PIDController getTurnController(){
-    return this.turnController;
-  }
-  
-  public void log(String s){
-    System.out.println(s);
   }
 
 }

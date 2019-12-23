@@ -10,15 +10,21 @@ import frc.team7587.robot.subsystems.DriveTrain;
 
 public class Robot extends TimedRobot {
 
-  public static OI m_oi = new OI();
   public static DriveTrain m_driveTrain = new DriveTrain();
+  public static OI m_oi = new OI();
 
-  Command m_autoCommand;
+  private Command m_autoCommand;
   // SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+  public Robot(){
+    super();
+    Utl.log("robot constructed");
+  }
+
 
   @Override
   public void robotInit() {
-    
+    Utl.log("robotInit() called");
     // m_autoCommand = new AutoCmdGroup();
 
   }
@@ -26,6 +32,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
 
+    // Utl.log("robotPeriodic() called",100);
   }
 
   @Override
@@ -53,6 +60,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    Utl.log("robot.teleopInit() called");
     if (m_autoCommand != null) {
       m_autoCommand.cancel();
     }
@@ -60,8 +68,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    // Utl.log("robot.teleopPeriodic() call", 100);
     Scheduler.getInstance().run();
-    log();
   }
 
   @Override
@@ -75,6 +83,7 @@ public class Robot extends TimedRobot {
   }
 
   public void log() {
+    
     // m_driveTrain.log();
   }
 }

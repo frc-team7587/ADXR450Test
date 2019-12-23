@@ -9,6 +9,7 @@ package frc.team7587.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team7587.robot.Robot;
+import frc.team7587.robot.Utl;
 import frc.team7587.robot.subsystems.DriveTrain;
 
 public class AutoRotate extends Command {
@@ -18,16 +19,18 @@ public class AutoRotate extends Command {
 
   public AutoRotate(double rotateAngle) {
     // requires(Robot.m_driveTrain);
-    log("....autoRotate cmd constructor");
+    Utl.log0("....autoRotate cmd constructor");
     this.rotateAngle = rotateAngle;
+
+    Robot.m_driveTrain.resetGyro();
     
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    log("....autoRotate cmd init");
-   Robot.m_driveTrain.resetGyro();
+    Utl.log0("....autoRotate cmd init");
+    Robot.m_driveTrain.resetGyro();
     Robot.m_driveTrain.initGyro(rotateAngle);
   }
 
@@ -42,27 +45,28 @@ public class AutoRotate extends Command {
   protected boolean isFinished() {
 
     // this may not work per some posts
-    //return Robot.m_driveTrain.getTurnController().onTarget();
+    // double err = Robot.m_driveTrain.getTurnController().getError();
+    // boolean ctrlOnTarget = Robot.m_driveTrain.getTurnController().onTarget();
+    // Utl.log0("gyro on target: " + ctrlOnTarget);
+    // return ctrlOnTarget;
 
     double tolerance = DriveTrain.kToleranceDegrees;
     double err = Math.abs(Robot.m_driveTrain.getGyroAngle() - this.rotateAngle);
-    log("....checking autoRotate finished.....");
-    // this didn't seeem to work either...
-    // double err = Robot.m_driveTrain.getTurnController().getError();
-
     if( Math.abs(err) < tolerance ){
       boolean done = (++inErrZoneCount) >= 5;
-      log("returning inZone err chheck: " + done);
+      Utl.log0(" ### autoRotate.isFinished() diff=" + err + "; inZone count=" + inErrZoneCount + "done? " + done);
       return done;   // after 5 consecutive inZone test
     }else{
       inErrZoneCount = 0;
     }
     return false;
+    
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Utl.log(" ## autoRotate.end()");
     Robot.m_driveTrain.stop();
     Robot.m_driveTrain.getTurnController().disable();
   }
@@ -73,7 +77,4 @@ public class AutoRotate extends Command {
   protected void interrupted() {
   }
 
-  public void log(String s){
-    System.out.println(s);
-  }
 }
