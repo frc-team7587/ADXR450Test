@@ -24,12 +24,12 @@ public class DriveTrain extends Subsystem implements PIDOutput{
 
   private ADXRS450_Gyro m_gyro;
 
-  static final double kP = 0.045;
-  static final double kI = 0.002;
-  static final double kD = 0.02;
+  static final double kP = 0.028; // 0.045
+  static final double kI = 0.0025; // 0.002
+  static final double kD = 0.02;  // 0.02
   static final double kF = 0.00;
 
-  public static final double kToleranceDegrees = 1.5f;
+  public static final double kToleranceDegrees = 1.0f;
 
   PIDController turnController;
   double rotateToAngleRate;

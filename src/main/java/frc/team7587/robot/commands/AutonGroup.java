@@ -16,9 +16,9 @@ public class AutonGroup extends CommandGroup {
   public AutonGroup() {
 
     addSequential(new DriveAhead(2));
-    addSequential(new AutoRotate(89f));
+    addSequential(new AutoRotate(90f));
     addSequential(new DriveAhead(2));
-    addSequential(new AutoRotate(-89f));
+    addSequential(new AutoRotate(-90f));
     addSequential(new DriveAhead(2));
     // addSequential(new AutoRotate(178f));
     // addSequential(new DriveAhead(2.5));

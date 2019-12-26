@@ -23,7 +23,7 @@ public class AutoRotate extends Command {
     Utl.log0("....autoRotate cmd constructor");
     this.rotateAngle = rotateAngle;
 
-    Robot.m_driveTrain.resetGyro();
+    // Robot.m_driveTrain.resetGyro();
     
   }
 
@@ -70,7 +70,7 @@ public class AutoRotate extends Command {
     Utl.log0(" ## autoRotate.end()");
     Robot.m_driveTrain.stop();
     Robot.m_driveTrain.getTurnController().disable();
-    Timer.delay(1);
+    Timer.delay(0.5);
   }
 
   // Called when another command which requires one or more of the same

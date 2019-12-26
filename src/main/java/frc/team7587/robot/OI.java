@@ -25,8 +25,8 @@ public class OI {
     btnRotate = new JoystickButton(logiJoy, 2);
     btnRotate2 = new JoystickButton(logiJoy, 3);
     
-    btnRotate.whenPressed(new AutoRotate(89f));
-    btnRotate2.whenPressed(new AutoRotate(-89f));
+    btnRotate.whenPressed(new AutoRotate(90f));
+    btnRotate2.whenPressed(new AutoRotate(-90f));
   }
 
   public Joystick getLogiJoy() {

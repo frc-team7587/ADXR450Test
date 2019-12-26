@@ -31,7 +31,7 @@ public class DriveAhead extends TimedCommand{
     @Override
     protected void end() {
         Robot.m_driveTrain.drive(0,0);
-        Timer.delay(2);
+        Timer.delay(0.5);
         Robot.m_driveTrain.stop();
     }
 
